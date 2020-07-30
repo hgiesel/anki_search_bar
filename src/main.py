@@ -1,7 +1,7 @@
 from aqt import mw, QObject, QShortcut, QKeySequence, Qt
 from aqt.gui_hooks import main_window_did_init
 
-from .gui.custom.searchbar import SearchBar
+from ..gui.custom.searchbar import SearchBar
 
 def setup_search_bar_mw():
     sb = SearchBar(mw, mw)
