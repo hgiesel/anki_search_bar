@@ -1,6 +1,6 @@
 from aqt import QWidget
 
-from ..searchbar_ui import Ui_SearchBar
+from .forms.searchbar_ui import Ui_SearchBar
 
 class SearchBar(QWidget):
     def __init__(self, mw, parent):

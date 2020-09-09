@@ -1,8 +1,10 @@
-from aqt import mw, QObject, QShortcut, QKeySequence, Qt
+from aqt import mw
+from aqt.qt import QObject, QShortcut, QKeySequence, Qt
 from aqt.gui_hooks import editor_did_init, editor_did_init_shortcuts
 from aqt.browser import Browser
 
-from ..gui.custom.searchbar import SearchBar
+from ..gui.searchbar import SearchBar
+
 
 def setup_search_bar_editor(cuts, editor):
     sb = SearchBar(mw, editor)

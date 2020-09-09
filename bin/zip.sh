@@ -9,12 +9,13 @@ else
   declare addon_id='search_bar'
 fi
 
-"$DIR/bin/compile.sh"
 cd "$DIR"
+
+"$DIR/bin/compile.sh"
 
 zip -r "$DIR/build/$addon_id.ankiaddon" \
   "manifest.json" \
   "__init__.py" \
   "gui/"*".py" \
-  "gui/custom/"*".py" \
+  "gui/forms/"*".py" \
   "src/"*".py" \

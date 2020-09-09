@@ -1,7 +1,9 @@
-from aqt import mw, QObject, QShortcut, QKeySequence, Qt
+from aqt import mw
+from aqt.qt import QShortcut, QKeySequence, Qt
 from aqt.gui_hooks import main_window_did_init, state_did_reset, webview_will_set_content, reviewer_will_end
 
-from ..gui.custom.searchbar import SearchBar
+from ..gui.searchbar import SearchBar
+
 
 def open_if_in_reviewer():
     if mw.state == 'review':
