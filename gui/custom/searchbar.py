@@ -1,5 +1,4 @@
 from aqt import QWidget
-from aqt.utils import showText
 
 from ..searchbar_ui import Ui_SearchBar
 

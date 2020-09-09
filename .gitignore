@@ -1,2 +1,4 @@
 gui/*.py
 *ankiaddon
+meta.json
+__pycache__
