@@ -1,35 +1,52 @@
 from aqt import mw
 from aqt.qt import QShortcut, QKeySequence, Qt
-from aqt.gui_hooks import main_window_did_init, state_did_reset, webview_will_set_content, reviewer_will_end
+from aqt.gui_hooks import (
+    main_window_did_init,
+    profile_did_open,
+    profile_will_close,
+    reviewer_will_end,
+)
 
 from ..gui.searchbar import SearchBar
+
+from .utils import (
+    searchbar_open,
+    searchbar_close,
+    searchbar_next,
+    searchbar_previous,
+)
 
 
 def open_if_in_reviewer():
     if mw.state == 'review':
         mw.searchBar.make_show()
 
-def setup_search_bar_mw():
+def setup_search_bar():
     sb = SearchBar(mw, mw)
 
     mw.searchBar = sb
     mw.mainLayout.addWidget(sb)
 
-    shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_F), mw)
-    shortcut.activated.connect(open_if_in_reviewer)
+def setup_shortcut(shortcut_string: str, func):
+    shortcut = QShortcut(QKeySequence(shortcut_string), mw)
+    shortcut.activated.connect(func)
 
-    shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Escape), mw)
-    shortcut.activated.connect(sb.hide)
+    mw.searchBar.add_shortcut(shortcut)
 
-    shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_G), mw)
-    shortcut.activated.connect(sb.highlight_next)
-
-    shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_G), mw)
-    shortcut.activated.connect(sb.highlight_prev)
+def setup_shortcuts():
+    setup_shortcut(searchbar_open.value, open_if_in_reviewer)
+    setup_shortcut(searchbar_close.value, mw.searchBar.hide)
+    setup_shortcut(searchbar_next.value, mw.searchBar.highlight_next)
+    setup_shortcut(searchbar_previous.value, mw.searchBar.highlight_previous)
 
 def close_search_bar():
     mw.searchBar.hide()
 
+def teardown_shortcuts():
+    mw.searchBar.cleanup()
+
 def init_main_window():
-    main_window_did_init.append(setup_search_bar_mw)
+    main_window_did_init.append(setup_search_bar)
+    profile_did_open.append(setup_shortcuts)
     reviewer_will_end.append(close_search_bar)
+    profile_will_close.append(teardown_shortcuts)

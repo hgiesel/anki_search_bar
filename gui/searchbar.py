@@ -13,12 +13,13 @@ class SearchBar(QWidget):
         self.ui.setupUi(self)
 
         self.setupUi()
+        self.shortcuts = []
 
     def setupUi(self):
         self.setVisible(False)
 
         self.ui.next.clicked.connect(self.highlight_next)
-        self.ui.prev.clicked.connect(self.highlight_prev)
+        self.ui.prev.clicked.connect(self.highlight_previous)
         self.ui.close.clicked.connect(self.hide)
 
     def make_show(self):
@@ -34,6 +35,15 @@ class SearchBar(QWidget):
         cmd = f'window.find("{self.get_input()}", false /* case-sensitive */, false /* backwards */, true /* wrap */, false /* unimplemented */, true /* iframes */)'
         self.parent.web.eval(cmd)
 
-    def highlight_prev(self):
+    def highlight_previous(self):
         cmd = f'window.find("{self.get_input()}", false /* case-sensitive */, true /* backwards */, true /* wrap */, false /* unimplemented */, true /* iframes */)'
         self.parent.web.eval(cmd)
+
+    def add_shortcut(self, shortcut):
+        self.shortcuts.append(shortcut)
+
+    def cleanup(self):
+        for shortcut in self.shortcuts:
+            shortcut.setEnabled(False)
+
+        self.shortcuts.clear()

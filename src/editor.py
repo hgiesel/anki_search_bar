@@ -5,6 +5,14 @@ from aqt.browser import Browser
 
 from ..gui.searchbar import SearchBar
 
+from .utils import (
+    searchbar_open,
+    searchbar_open_browser,
+    searchbar_close,
+    searchbar_next,
+    searchbar_previous,
+)
+
 
 def setup_search_bar_editor(cuts, editor):
     sb = SearchBar(mw, editor)
@@ -13,10 +21,10 @@ def setup_search_bar_editor(cuts, editor):
     editor.outerLayout.addWidget(sb)
 
     cuts.extend([
-        ('Ctrl+Alt+Shift+F' if isinstance(editor.parentWindow, Browser) else 'Ctrl+F', editor.searchBar.make_show, True),
-        ('Ctrl+Escape', editor.searchBar.hide, True),
-        ('Ctrl+G', editor.searchBar.highlight_next, True),
-        ('Ctrl+Shift+G', editor.searchBar.highlight_prev, True),
+        (searchbar_open_browser.value if isinstance(editor.parentWindow, Browser) else searchbar_open.value, editor.searchBar.make_show, True),
+        (searchbar_close.value, editor.searchBar.hide, True),
+        (searchbar_next.value, editor.searchBar.highlight_next, True),
+        (searchbar_previous.value, editor.searchBar.highlight_prev, True),
     ])
 
 def init_editor():
